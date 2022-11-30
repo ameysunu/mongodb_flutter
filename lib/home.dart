@@ -13,31 +13,25 @@ class _HomePageState extends State<HomePage> {
     const homeColor = const Color(0xFFBFFC679);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 150.0,
-                width: 300.0,
-                color: Colors.transparent,
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: homeColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    child: new Center(
-                      child: new Text(
-                        "Rounded Corner Rectangle Shape",
-                        style: TextStyle(color: Colors.white, fontSize: 22),
-                        textAlign: TextAlign.center,
-                      ),
-                    )),
-              ),
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 150.0,
+            color: Colors.transparent,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: homeColor,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                child: new Center(
+                  child: new Text(
+                    "Welcome",
+                    style: TextStyle(color: Colors.black, fontSize: 22),
+                    textAlign: TextAlign.center,
+                  ),
+                )),
           ),
-        ),
+        ],
       ),
     );
   }
