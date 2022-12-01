@@ -1,3 +1,4 @@
+import 'package:mongodb_flutter/mongoconnect.dart';
 import 'package:realm/realm.dart';
 
 final AppConfiguration _appConfig = AppConfiguration("application-0-jjhdy");

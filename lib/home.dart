@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/auth.dart';
 
+import 'mongoconnect.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 logoutUser();
                 Navigator.pop(context);
               },
-              child: Text("Logout"))
+              child: Text("Logout")),
         ],
       ),
     );
