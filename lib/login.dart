@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mongodb_flutter/auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,7 +17,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    const backgroundColor = const Color(0xFFBF9E3C6);
+
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -27,6 +31,11 @@ class _LoginPageState extends State<LoginPage> {
                 "Hello there!",
                 style: TextStyle(fontSize: 20),
               ),
+              Container(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: SvgPicture.asset("images/home.svg",
+                      semanticsLabel: 'Acme Logo')),
+              Spacer(),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
@@ -50,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Spacer(),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
@@ -72,11 +80,10 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     ],
                   ),
-                  onPressed: () {
-                    loginMongo(emailController.text, passwordController.text);
-                    if (loginMongo(
-                            emailController.text, passwordController.text) ==
-                        true) {
+                  onPressed: () async {
+                    await loginMongo(
+                        emailController.text, passwordController.text);
+                    if (isSuccess) {
                       print("Success");
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
