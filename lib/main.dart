@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/home.dart';
 import 'package:mongodb_flutter/login.dart';
+import 'package:realm/realm.dart';
+
+final AppConfiguration _appConfig = AppConfiguration("application-0-jjhdy");
+final App app = App(_appConfig);
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
+      home: app.currentUser != null ? HomePage() : LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }

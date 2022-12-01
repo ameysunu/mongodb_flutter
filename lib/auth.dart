@@ -15,3 +15,8 @@ loginMongo(userEmail, userPassword) async {
     isSuccess = false;
   }
 }
+
+logoutUser() async {
+  final user = app.currentUser;
+  await user?.logOut();
+}

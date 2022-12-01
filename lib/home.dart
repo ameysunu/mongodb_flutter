@@ -32,6 +32,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )),
           ),
+          ElevatedButton(
+              onPressed: () {
+                logoutUser();
+                Navigator.pop(context);
+              },
+              child: Text("Logout"))
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mongodb_flutter/auth.dart';
+import 'package:mongodb_flutter/home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -84,7 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                     await loginMongo(
                         emailController.text, passwordController.text);
                     if (isSuccess) {
-                      print("Success");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           backgroundColor: Colors.red,
