@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/auth.dart';
+import 'package:mongodb_flutter/dashboard.dart';
 
 import 'mongoconnect.dart';
 
@@ -26,20 +27,39 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     color: homeColor,
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                child: new Center(
-                  child: new Text(
-                    "Welcome",
-                    style: TextStyle(color: Colors.black, fontSize: 22),
-                    textAlign: TextAlign.center,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Dashboard()),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.dashboard,
+                          color: Colors.black26,
+                        )),
+                    new Center(
+                      child: new Text(
+                        "Welcome",
+                        style: TextStyle(color: Colors.black, fontSize: 22),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          logoutUser();
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                          color: Colors.deepPurpleAccent,
+                        ))
+                  ],
                 )),
           ),
-          ElevatedButton(
-              onPressed: () {
-                logoutUser();
-                Navigator.pop(context);
-              },
-              child: Text("Logout")),
         ],
       ),
     );
