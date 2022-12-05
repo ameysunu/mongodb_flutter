@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/mongoconnect.dart';
 import 'package:mongodb_flutter/auth.dart';
+
+import '../config.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
@@ -18,6 +22,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
   bool selectDate = false;
 
   var dob;
+
+  @override
+  void initState() {
+    runUserCheck();
+  }
 
   Widget build(BuildContext context) {
     const homeColor = const Color(0xFFB398679);
@@ -96,7 +105,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: ElevatedButton(
                   onPressed: () {
-                    mongoAtlasInsert(app.currentUser?.id, nameController.text,
+                    checkIfUserExists(app.currentUser?.id, nameController.text,
                         countryController.text, dob);
                   },
                   style: ElevatedButton.styleFrom(
