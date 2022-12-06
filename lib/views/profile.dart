@@ -23,9 +23,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   var dob;
 
-  @override
-  void initState() {
-    runUserCheck();
+  Future<String> getData() async {
+    return nameController.text = await runUserCheck(app.currentUser?.id);
   }
 
   Widget build(BuildContext context) {
@@ -40,94 +39,203 @@ class _UpdateProfileState extends State<UpdateProfile> {
         elevation: 0,
         title: Text("My Profile"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "You have not created your profile yet. Fill your details below, and we can get you started.",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: TextField(
-                style: TextStyle(color: Colors.white),
-                controller: nameController,
-                decoration: InputDecoration(
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.white, width: 1.0),
-                    ),
-                    border: OutlineInputBorder(),
-                    labelText: 'Name'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: TextField(
-                style: TextStyle(color: Colors.white),
-                controller: countryController,
-                decoration: InputDecoration(
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.white, width: 1.0),
-                    ),
-                    border: OutlineInputBorder(),
-                    labelText: 'Country'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Column(
-                children: [
-                  Text(
-                    "Select date of birth",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Container(
-                    height: 200,
-                    child: CupertinoDatePicker(
-                      mode: CupertinoDatePickerMode.date,
-                      initialDateTime: DateTime(2022, 11, 11),
-                      onDateTimeChanged: (DateTime newDateTime) {
-                        dob = newDateTime;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                child: ElevatedButton(
-                  onPressed: () {
-                    checkIfUserExists(app.currentUser?.id, nameController.text,
-                        countryController.text, dob);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: buttonColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    elevation: 15.0,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      'Update my profile',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
+      body: FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  '${snapshot.error} occurred',
+                  style: TextStyle(fontSize: 18),
                 ),
-              ),
-            ),
-          ],
-        ),
+              );
+
+              // if we got our data
+            } else if (snapshot.hasData) {
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: TextField(
+                        style: TextStyle(color: Colors.white),
+                        controller: nameController,
+                        decoration: InputDecoration(
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 1.0),
+                            ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Name'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: TextField(
+                        style: TextStyle(color: Colors.white),
+                        controller: countryController,
+                        decoration: InputDecoration(
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 1.0),
+                            ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Country'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Select date of birth",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          Container(
+                            height: 200,
+                            child: CupertinoDatePicker(
+                              mode: CupertinoDatePickerMode.date,
+                              initialDateTime: DateTime(2022, 11, 11),
+                              onDateTimeChanged: (DateTime newDateTime) {
+                                dob = newDateTime;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            checkIfUserExists(
+                                app.currentUser?.id,
+                                nameController.text,
+                                countryController.text,
+                                dob);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttonColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            elevation: 15.0,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              'Update my profile',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        future: getData(),
       ),
+      // ),
+      // body: Padding(
+      //   padding: const EdgeInsets.all(10.0),
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.center,
+      //     children: [
+      //       Text(
+      //         "You have not created your profile yet. Fill your details below, and we can get you started.",
+      //         style: TextStyle(color: Colors.white, fontSize: 20),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.only(top: 10),
+      //         child: TextField(
+      //           style: TextStyle(color: Colors.white),
+      //           controller: nameController,
+      //           decoration: InputDecoration(
+      //               enabledBorder: const OutlineInputBorder(
+      //                 borderSide:
+      //                     const BorderSide(color: Colors.white, width: 1.0),
+      //               ),
+      //               border: OutlineInputBorder(),
+      //               labelText: 'Name'),
+      //         ),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.only(top: 10),
+      //         child: TextField(
+      //           style: TextStyle(color: Colors.white),
+      //           controller: countryController,
+      //           decoration: InputDecoration(
+      //               enabledBorder: const OutlineInputBorder(
+      //                 borderSide:
+      //                     const BorderSide(color: Colors.white, width: 1.0),
+      //               ),
+      //               border: OutlineInputBorder(),
+      //               labelText: 'Country'),
+      //         ),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.only(top: 10.0),
+      //         child: Column(
+      //           children: [
+      //             Text(
+      //               "Select date of birth",
+      //               style: TextStyle(color: Colors.white, fontSize: 20),
+      //             ),
+      //             Container(
+      //               height: 200,
+      //               child: CupertinoDatePicker(
+      //                 mode: CupertinoDatePickerMode.date,
+      //                 initialDateTime: DateTime(2022, 11, 11),
+      //                 onDateTimeChanged: (DateTime newDateTime) {
+      //                   dob = newDateTime;
+      //                 },
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //       Spacer(),
+      //       Padding(
+      //         padding: const EdgeInsets.all(10.0),
+      //         child: Container(
+      //           width: MediaQuery.of(context).size.width * 0.6,
+      //           child: ElevatedButton(
+      //             onPressed: () {
+      //               checkIfUserExists(app.currentUser?.id, nameController.text,
+      //                   countryController.text, dob);
+      //             },
+      //             style: ElevatedButton.styleFrom(
+      //               primary: buttonColor,
+      //               shape: RoundedRectangleBorder(
+      //                 borderRadius: BorderRadius.circular(25),
+      //               ),
+      //               elevation: 15.0,
+      //             ),
+      //             child: Padding(
+      //               padding: const EdgeInsets.all(15.0),
+      //               child: Text(
+      //                 'Update my profile',
+      //                 style: TextStyle(fontSize: 20),
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

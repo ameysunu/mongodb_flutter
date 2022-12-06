@@ -3,7 +3,7 @@ import 'package:mongodb_flutter/auth.dart';
 
 import 'config.dart';
 
-runUserCheck() async {
+runUserCheck(userId) async {
   var db = await Db.create(dbConnUsers);
   try {
     await db.open();
@@ -11,9 +11,12 @@ runUserCheck() async {
     print(e.toString());
   }
   var collection = db.collection('details');
-  await collection.find(where.eq('id', app.currentUser?.id)).forEach((v) {
-    return print(v["id"]);
-  });
+  // await collection.find(where.eq('id', userId)).forEach((v) {
+  //   userId = v;
+  // });
+
+  var currentUser = await collection.findOne({"id": userId});
+  return currentUser?["username"] ?? "";
 }
 
 mongoAtlasInsert(userId, userName, countryName, dob) async {
