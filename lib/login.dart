@@ -6,8 +6,6 @@ import 'package:mongodb_flutter/auth.dart';
 import 'package:mongodb_flutter/home.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/auth.dart';
 import 'package:mongodb_flutter/dashboard.dart';
+import 'package:mongodb_flutter/views/create.dart';
 import 'package:mongodb_flutter/views/widgets.dart';
 
 import 'mongoconnect.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Dashboard()),
+                                builder: (context) => Dashboard()),
                           );
                         },
                         icon: Icon(
@@ -97,7 +98,12 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFFB398679),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateLetters()),
+          );
+        },
         child: Icon(Icons.add),
       ),
     );

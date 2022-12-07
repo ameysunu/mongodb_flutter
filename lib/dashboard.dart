@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/views/profile.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
-
   @override
   State<Dashboard> createState() => _DashboardState();
 }
