@@ -85,7 +85,7 @@ Future getInfo(userId) async {
   return test;
 }
 
-createDocuments(userId, title, body, date, isPublic) async {
+Future<void> createDocuments(userId, title, body, date, isPublic) async {
   var db = await Db.create(dbConnUsers);
   try {
     await db.open();

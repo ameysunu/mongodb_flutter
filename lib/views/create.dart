@@ -111,9 +111,14 @@ class _CreateLettersState extends State<CreateLetters> {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: ElevatedButton(
-                  onPressed: () {
-                    createDocuments(app.currentUser?.id, titleController.text,
-                        bodyController.text, dateController.text, isPrivate);
+                  onPressed: () async {
+                    await createDocuments(
+                        app.currentUser?.id,
+                        titleController.text,
+                        bodyController.text,
+                        dateController.text,
+                        isPrivate);
+                    Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFFBC25450),
