@@ -85,7 +85,8 @@ Future getInfo(userId) async {
   return test;
 }
 
-Future<void> createDocuments(userId, title, body, date, isPublic) async {
+Future<void> createDocuments(
+    userId, title, body, date, isPublic, recordId) async {
   var db = await Db.create(dbConnUsers);
   try {
     await db.open();
@@ -95,10 +96,27 @@ Future<void> createDocuments(userId, title, body, date, isPublic) async {
 
   var collection = db.collection('letters');
   await collection.insertOne({
+    'recordId': recordId,
     'id': userId,
     'title': title,
     'body': body,
     'date': date,
     'isPublic': isPublic
   });
+}
+
+Future<void> updateLetters(userId, body, date, isPublic, recordId) async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  var collection = db.collection('letters');
+  var currentLetter = await collection.findOne({"recordId": recordId});
+  currentLetter!["body"] = body;
+  currentLetter["isPublic"] = isPublic;
+
+  await collection.replaceOne({"recordId": recordId}, currentLetter);
 }

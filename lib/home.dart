@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/auth.dart';
 import 'package:mongodb_flutter/dashboard.dart';
 import 'package:mongodb_flutter/views/create.dart';
+import 'package:mongodb_flutter/views/view.dart';
 import 'package:mongodb_flutter/views/widgets.dart';
 
 import 'mongoconnect.dart';
@@ -92,7 +93,24 @@ class _HomePageState extends State<HomePage> {
                 } else if (snapshot.hasData) {
                   return Column(children: [
                     for (var d in snapshot.data)
-                      detailWidget(d["id"], d["title"], d["date"], context)
+                      InkWell(
+                        child: detailWidget(
+                            d["id"], d["title"], d["date"], context),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewLetters(
+                                      id: d["id"],
+                                      title: d["title"],
+                                      isPrivate: d["isPublic"],
+                                      body: d["body"],
+                                      date: d["date"],
+                                      recordId: d["recordId"],
+                                    )),
+                          );
+                        },
+                      )
                   ]);
                 } else if (!snapshot.hasData) {
                   return Text("No data");

@@ -1,36 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/auth.dart';
+import 'package:mongodb_flutter/mongoconnect.dart';
 
-import '../mongoconnect.dart';
-import 'controller.dart';
+class ViewLetters extends StatefulWidget {
+  String id;
+  String title;
+  bool isPrivate;
+  String body;
+  String date;
+  String recordId;
 
-class CreateLetters extends StatefulWidget {
+  ViewLetters(
+      {super.key,
+      required this.id,
+      required this.title,
+      required this.isPrivate,
+      required this.body,
+      required this.date,
+      required this.recordId});
+
   @override
-  State<CreateLetters> createState() => _CreateLettersState();
+  State<ViewLetters> createState() => _ViewLettersState();
 }
 
-class _CreateLettersState extends State<CreateLetters> {
-  TextEditingController titleController = TextEditingController();
+class _ViewLettersState extends State<ViewLetters> {
+  @override
   TextEditingController dateController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
-
-  bool isPrivate = false;
-
-  DateTime current_date = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dateController.text = "${current_date}";
+    dateController.text = widget.date;
+    bodyController.text = widget.body;
   }
 
-  @override
   Widget build(BuildContext context) {
     const homeColor = const Color(0xFFBFFC679);
 
     return Scaffold(
-      backgroundColor: homeColor,
+      backgroundColor: const Color(0xFFBF9E3C6),
       appBar: AppBar(
         backgroundColor: homeColor,
         iconTheme: IconThemeData(color: Colors.black),
@@ -38,7 +48,7 @@ class _CreateLettersState extends State<CreateLetters> {
         title: Column(
           children: [
             Text(
-              "Create a Letter",
+              "${widget.title}",
               style: TextStyle(color: Colors.black),
             ),
           ],
@@ -47,19 +57,25 @@ class _CreateLettersState extends State<CreateLetters> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: TextField(
-                style: TextStyle(color: Colors.black),
-                controller: titleController,
-                decoration: InputDecoration(
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 1.0),
-                    ),
-                    border: OutlineInputBorder(),
-                    labelText: 'Title'),
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Edit your letter",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    child: Icon(Icons.mail, color: Colors.white),
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: Color(0xFFBC25450), shape: BoxShape.circle),
+                  )
+                ],
               ),
             ),
             Padding(
@@ -95,13 +111,12 @@ class _CreateLettersState extends State<CreateLetters> {
               children: [
                 Text("Make your letter public?"),
                 Switch(
-                  value: isPrivate,
+                  value: widget.isPrivate,
                   activeColor: Colors.blue,
                   onChanged: (bool value) {
                     setState(() {
-                      isPrivate = value;
+                      widget.isPrivate = value;
                     });
-                    print(isPrivate);
                   },
                 ),
               ],
@@ -113,13 +128,12 @@ class _CreateLettersState extends State<CreateLetters> {
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: ElevatedButton(
                   onPressed: () async {
-                    await createDocuments(
+                    await updateLetters(
                         app.currentUser?.id,
-                        titleController.text,
                         bodyController.text,
                         dateController.text,
-                        isPrivate,
-                        getRandomString(15));
+                        widget.isPrivate,
+                        widget.recordId);
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
@@ -132,7 +146,7 @@ class _CreateLettersState extends State<CreateLetters> {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
-                      'Create Letter',
+                      'Update my letter',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
