@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:mongodb_flutter/auth.dart';
 
@@ -69,4 +70,17 @@ mongoAtlasUpdate(userId, userName, countryName, dob) async {
   currentUser["dob"] = dob;
 
   await collection.replaceOne({"id": userId}, currentUser);
+}
+
+Future getInfo(userId) async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  DbCollection coll = db.collection('letters');
+  var test = await coll.find({'id': userId}).toList();
+  return test;
 }

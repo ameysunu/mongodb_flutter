@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/auth.dart';
 import 'package:mongodb_flutter/dashboard.dart';
+import 'package:mongodb_flutter/views/widgets.dart';
 
 import 'mongoconnect.dart';
 
@@ -60,7 +61,44 @@ class _HomePageState extends State<HomePage> {
                   ],
                 )),
           ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "My Letters",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          FutureBuilder(
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      '${snapshot.error} occurred',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return Column(children: [
+                    for (var d in snapshot.data)
+                      detailWidget(d["id"], d["title"], d["date"], context)
+                  ]);
+                } else if (!snapshot.hasData) {
+                  return Text("No data");
+                }
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            future: getInfo(app.currentUser?.id),
+          )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xFFB398679),
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
