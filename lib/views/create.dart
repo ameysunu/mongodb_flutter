@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mongodb_flutter/auth.dart';
+
+import '../mongoconnect.dart';
 
 class CreateLetters extends StatefulWidget {
   @override
@@ -109,11 +112,8 @@ class _CreateLettersState extends State<CreateLetters> {
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: ElevatedButton(
                   onPressed: () {
-                    // checkIfUserExists(
-                    //     app.currentUser?.id,
-                    //     nameController.text,
-                    //     countryController.text,
-                    //     dob);
+                    createDocuments(app.currentUser?.id, titleController.text,
+                        bodyController.text, dateController.text, isPrivate);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFFBC25450),

@@ -84,3 +84,21 @@ Future getInfo(userId) async {
   var test = await coll.find({'id': userId}).toList();
   return test;
 }
+
+createDocuments(userId, title, body, date, isPublic) async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  var collection = db.collection('letters');
+  await collection.insertOne({
+    'id': userId,
+    'title': title,
+    'body': body,
+    'date': date,
+    'isPublic': isPublic
+  });
+}
