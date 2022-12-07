@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mongodb_flutter/views/profile.dart';
 
+import 'views/global.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -12,7 +14,7 @@ class _DashboardState extends State<Dashboard> {
     const backgroundColor = const Color(0xFFBF9E3C6);
     const homeColor = const Color(0xFFBFFC679);
     const boxColor = const Color(0xFFB398679);
-    const secondBoxColor = const Color(0xFFBFF8981);
+    const secondBoxColor = const Color(0xFFB63AAEA);
 
     return Scaffold(
       appBar: AppBar(
@@ -70,15 +72,41 @@ class _DashboardState extends State<Dashboard> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const GlobalLetters()));
+                },
                 child: Container(
-                    decoration: BoxDecoration(
-                        color: secondBoxColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  color: Colors.transparent,
+                  child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.public,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          Text(
+                            "Global Letters",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: secondBoxColor,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0)))),
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
