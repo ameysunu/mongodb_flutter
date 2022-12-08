@@ -33,7 +33,7 @@ Widget detailWidget(userId, title, date, context) {
   );
 }
 
-Widget globalWidget(userId, title, date, context) {
+Widget globalWidget(userId, title, date, name, context) {
   return Container(
     child: Padding(
       padding: const EdgeInsets.all(10.0),
@@ -52,11 +52,11 @@ Widget globalWidget(userId, title, date, context) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(date),
               Text(
                 title,
                 style: TextStyle(fontWeight: FontWeight.bold),
-              )
+              ),
+              Text("By: ${name}")
             ],
           ),
           Spacer()

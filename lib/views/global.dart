@@ -3,6 +3,7 @@ import 'package:mongodb_flutter/auth.dart';
 import 'package:mongodb_flutter/views/widgets.dart';
 
 import '../mongoconnect.dart';
+import 'globalview.dart';
 
 class GlobalLetters extends StatefulWidget {
   const GlobalLetters({super.key});
@@ -63,20 +64,21 @@ class _GlobalLettersState extends State<GlobalLetters> {
                     for (var d in snapshot.data)
                       InkWell(
                         child: globalWidget(d["id"], d["title"], d["date"],
-                            context), //Color(0xFFB63AAEA)
+                            d["username"], context), //Color(0xFFB63AAEA)
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => ViewLetters(
-                          //             id: d["id"],
-                          //             title: d["title"],
-                          //             isPrivate: d["isPublic"],
-                          //             body: d["body"],
-                          //             date: d["date"],
-                          //             recordId: d["recordId"],
-                          //           )),
-                          // );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GlobalViewLetters(
+                                        id: d["id"],
+                                        title: d["title"],
+                                        isPrivate: d["isPublic"],
+                                        body: d["body"],
+                                        date: d["date"],
+                                        recordId: d["recordId"],
+                                        username: d["username"],
+                                        country: d["country"],
+                                      )));
                         },
                       )
                   ]);
