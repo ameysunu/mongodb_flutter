@@ -149,8 +149,14 @@ class _GlobalViewLettersState extends State<GlobalViewLetters> {
                   ),
                   IconButton(
                       onPressed: () async {
-                        await createComments(widget.recordId,
-                            commentsController.text, liked, loved);
+                        await createComments(
+                            widget.recordId,
+                            commentsController.text,
+                            liked,
+                            loved,
+                            widget.username,
+                            widget.country,
+                            widget.id);
                         commentsController.clear();
                       },
                       icon: Icon(Icons.send))

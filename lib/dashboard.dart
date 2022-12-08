@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mongodb_flutter/views/comments.dart';
 import 'package:mongodb_flutter/views/profile.dart';
 
 import 'views/global.dart';
@@ -15,6 +16,7 @@ class _DashboardState extends State<Dashboard> {
     const homeColor = const Color(0xFFBFFC679);
     const boxColor = const Color(0xFFB398679);
     const secondBoxColor = const Color(0xFFB63AAEA);
+    const thirdBoxColor = const Color(0xFFBFA8E73);
 
     return Scaffold(
       appBar: AppBar(
@@ -102,6 +104,43 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       decoration: BoxDecoration(
                           color: secondBoxColor,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0)))),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyComments()));
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  color: Colors.transparent,
+                  child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.favorite_rounded,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          Text(
+                            "My Comments",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: thirdBoxColor,
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0)))),
                 ),

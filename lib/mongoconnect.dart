@@ -153,7 +153,8 @@ Future getPersonalDetails(userId) async {
   return test;
 }
 
-Future<void> createComments(recordId, comments, like, love) async {
+Future<void> createComments(
+    recordId, comments, like, love, name, country, userId) async {
   var db = await Db.create(dbConnUsers);
   try {
     await db.open();
@@ -167,10 +168,13 @@ Future<void> createComments(recordId, comments, like, love) async {
     'comments': comments,
     'like': like,
     'love': love,
+    'name': name,
+    'userId': userId,
+    'country': country
   });
 }
 
-Future getComments(recordId) async {
+Future getComments(userId) async {
   var db = await Db.create(dbConnUsers);
   try {
     await db.open();
@@ -179,6 +183,6 @@ Future getComments(recordId) async {
   }
 
   DbCollection coll = db.collection('comments');
-  var test = await coll.find({'id': recordId}).toList();
+  var test = await coll.find({'userId': userId}).toList();
   return test;
 }
