@@ -33,6 +33,9 @@ class _GlobalViewLettersState extends State<GlobalViewLetters> {
   TextEditingController bodyController = TextEditingController();
   TextEditingController commentsController = TextEditingController();
 
+  bool liked = false;
+  bool loved = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -119,9 +122,23 @@ class _GlobalViewLettersState extends State<GlobalViewLetters> {
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.thumb_up_outlined)),
+                      onPressed: () {
+                        setState(() {
+                          liked = !liked;
+                        });
+                      },
+                      icon: Icon(this.liked
+                          ? Icons.thumb_up
+                          : Icons.thumb_up_outlined)),
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.favorite_border)),
+                      onPressed: () {
+                        setState(() {
+                          loved = !loved;
+                        });
+                      },
+                      icon: Icon(this.loved
+                          ? Icons.favorite
+                          : Icons.favorite_outline)),
                   Flexible(
                     child: TextField(
                       decoration:
@@ -130,7 +147,13 @@ class _GlobalViewLettersState extends State<GlobalViewLetters> {
                       controller: commentsController,
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.send))
+                  IconButton(
+                      onPressed: () async {
+                        await createComments(widget.recordId,
+                            commentsController.text, liked, loved);
+                        commentsController.clear();
+                      },
+                      icon: Icon(Icons.send))
                 ],
               ),
             )

@@ -152,3 +152,33 @@ Future getPersonalDetails(userId) async {
   var test = await coll.find({'id': userId}).toList();
   return test;
 }
+
+Future<void> createComments(recordId, comments, like, love) async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  var collection = db.collection('comments');
+  await collection.insertOne({
+    'recordId': recordId,
+    'comments': comments,
+    'like': like,
+    'love': love,
+  });
+}
+
+Future getComments(recordId) async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  DbCollection coll = db.collection('comments');
+  var test = await coll.find({'id': recordId}).toList();
+  return test;
+}
