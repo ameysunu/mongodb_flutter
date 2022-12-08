@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mongodb_flutter/auth.dart';
+import 'package:mongodb_flutter/views/widgets.dart';
+
+import '../mongoconnect.dart';
 
 class GlobalLetters extends StatefulWidget {
   const GlobalLetters({super.key});
@@ -25,16 +29,68 @@ class _GlobalLettersState extends State<GlobalLetters> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Text(
-              "Letters from all over the world",
-              style: TextStyle(fontSize: 20),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Letters from the world",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.refresh))
+              ],
+            ),
+          ),
+          FutureBuilder(
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      '${snapshot.error} occurred',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return Column(children: [
+                    for (var d in snapshot.data)
+                      InkWell(
+                        child: globalWidget(d["id"], d["title"], d["date"],
+                            context), //Color(0xFFB63AAEA)
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => ViewLetters(
+                          //             id: d["id"],
+                          //             title: d["title"],
+                          //             isPrivate: d["isPublic"],
+                          //             body: d["body"],
+                          //             date: d["date"],
+                          //             recordId: d["recordId"],
+                          //           )),
+                          // );
+                        },
+                      )
+                  ]);
+                } else if (!snapshot.hasData) {
+                  return Text("No data");
+                }
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            future: getAllData(),
+          )
+        ],
       ),
     );
   }

@@ -94,10 +94,16 @@ Future<void> createDocuments(
     print(e.toString());
   }
 
+  var personalData = await getPersonalDetails(app.currentUser?.id);
+  var country = personalData[0]["countryname"];
+  var username = personalData[0]["username"];
+
   var collection = db.collection('letters');
   await collection.insertOne({
     'recordId': recordId,
     'id': userId,
+    'username': username,
+    'country': country,
     'title': title,
     'body': body,
     'date': date,
@@ -119,4 +125,30 @@ Future<void> updateLetters(userId, body, date, isPublic, recordId) async {
   currentLetter["isPublic"] = isPublic;
 
   await collection.replaceOne({"recordId": recordId}, currentLetter);
+}
+
+Future getAllData() async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  DbCollection coll = db.collection('letters');
+  var allLetters = await coll.find({'isPublic': true}).toList();
+  return allLetters;
+}
+
+Future getPersonalDetails(userId) async {
+  var db = await Db.create(dbConnUsers);
+  try {
+    await db.open();
+  } on Exception catch (e) {
+    print(e.toString());
+  }
+
+  DbCollection coll = db.collection('details');
+  var test = await coll.find({'id': userId}).toList();
+  return test;
 }
